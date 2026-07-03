@@ -52,18 +52,21 @@ var m2 = new THREE.Mesh( new THREE.TorusGeometry( 2, 0.25, 40, 40 ), ma2);
 m2.position.set(0, 0, 0);
 scene.add(m2);
 
+// Initial rotation offset
 m1.rotation.y += 1;
 m2.rotation.x += 1;
 
-// Each frame
+// For each frame...
 var render = function() {
   requestAnimationFrame(render);
 
-  // Rotate the boxes
+  // Rotate the objects
   m0.rotation.x += 0.0005;
   m0.rotation.y += 0.0010;
+
   m1.rotation.x += 0.0015;
   m1.rotation.y += 0.0020;
+
   m2.rotation.x += 0.0025;
   m2.rotation.y += 0.0030;
 
@@ -73,5 +76,3 @@ var render = function() {
 
 // Start the animation
 render();
-
-
