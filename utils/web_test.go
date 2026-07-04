@@ -27,6 +27,28 @@ func TestGetDomain(t *testing.T) {
 	}
 }
 
+func TestGetHost(t *testing.T) {
+	tests := []struct {
+		host string
+		want string
+	}{
+		{"example.com:8080", "example.com"},
+		{"example.com", "example.com"},
+		{"[::1]:443", "::1"},
+		{"::1", "::1"},
+		{"127.0.0.1:3000", "127.0.0.1"},
+		{"127.0.0.1", "127.0.0.1"},
+		{"localhost:3000", "localhost"},
+	}
+	for _, tt := range tests {
+		req := &http.Request{Host: tt.host}
+		got := GetHost(req)
+		if got != tt.want {
+			t.Errorf("GetHost(Host=%q) = %q, want %q", tt.host, got, tt.want)
+		}
+	}
+}
+
 func TestJoinHostPort(t *testing.T) {
 	tests := []struct {
 		host      string
