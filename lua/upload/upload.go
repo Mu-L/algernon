@@ -214,7 +214,7 @@ func uploadedFileSave(L *lua.LState) int {
 	absBase, _ := filepath.Abs(ulf.scriptdir)
 	absTarget, _ := filepath.Abs(writeFilename)
 	if !strings.HasPrefix(absTarget, absBase+string(os.PathSeparator)) && absTarget != absBase {
-		logrus.Error("path traversal attempt blocked: ", writeFilename)
+		logrus.Warn("path traversal attempt blocked: ", writeFilename)
 		L.Push(lua.LBool(false))
 		return 1
 	}
@@ -250,7 +250,7 @@ func uploadedFileSaveIn(L *lua.LState) int {
 	absBase, _ := filepath.Abs(baseDir)
 	absTarget, _ := filepath.Abs(writeFilename)
 	if !strings.HasPrefix(absTarget, absBase+string(os.PathSeparator)) && absTarget != absBase {
-		logrus.Error("path traversal attempt blocked: ", writeFilename)
+		logrus.Warn("path traversal attempt blocked: ", writeFilename)
 		L.Push(lua.LBool(false))
 		return 1
 	}
