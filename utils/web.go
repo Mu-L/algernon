@@ -5,15 +5,23 @@ import (
 	"net/http"
 )
 
+// GetHost returns the host of a request, handling both IPv4 and IPv6.
+// Unlike GetDomain, it does not collapse loopback addresses, so URLs built
+// from it stay same-origin with the request.
+func GetHost(req *http.Request) string {
+	host, _, err := net.SplitHostPort(req.Host)
+	if err != nil {
+		// No port in host, use as-is
+		return req.Host
+	}
+	return host
+}
+
 // GetDomain returns the host/domain of a request, handling both IPv4 and IPv6.
 // The loopback hosts 127.0.0.1 and ::1 are collapsed to "localhost", so that
 // a single localhost/ document root serves all three.
 func GetDomain(req *http.Request) string {
-	host, _, err := net.SplitHostPort(req.Host)
-	if err != nil {
-		// No port in host, use as-is
-		host = req.Host
-	}
+	host := GetHost(req)
 	if host == "127.0.0.1" || host == "::1" {
 		return "localhost"
 	}
