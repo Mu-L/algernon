@@ -127,7 +127,8 @@ func (ac *Config) InsertAutoRefresh(req *http.Request, htmldata []byte) []byte {
 		if ac.serverHost != "" {
 			fullHost = utils.JoinHostPort(ac.serverHost, fullHost)
 		} else {
-			fullHost = utils.JoinHostPort(utils.GetDomain(req), fullHost)
+			// Use the raw request host
+			fullHost = utils.JoinHostPort(utils.GetHost(req), fullHost)
 		}
 	}
 	// Wait 70% of an event duration before starting to listen for events
