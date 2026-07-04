@@ -1,5 +1,35 @@
 # Changelog
 
+Changes from 1.17.9 to 1.17.10
+==============================
+
+* Also support case-insensitive file systems when checking for permissions (thanks @manus-use).
+* Fix issue #122, open the internal log file with different flags.
+* Fix the flag precedence issue, ref #145.
+* Make the path handling more robust in connection with React / Hot Module Replacement.
+* Render more types of Lua tables, ref #199.
+* Encode filenames in connection with the directory listing, ref #144.
+* Add the `remoteaddr` function, ref #114.
+* Let `KeyValue` also support table values, ref #113.
+* Add support for `global.lua` files for initializing the Lua pool, ref #103.
+* Also allow `SIGUSR2` to clear the cache, thanks @MatrixNeoKozak, ref #174.
+* Make argument handling more robust.
+* Handle `127.0.0.1` and `::1` as `localhost` when serving domains.
+* Add `-D` as a short flag for `--domain`.
+* Use `html/template` for the error message page.
+* Escape filenames in error messages when in debug mode.
+* Make `HMRUpdateHandler` more robust.
+* Use `encodeURIComponent` in the registration for example.
+* Make two path-related errors into warnings.
+* Fix and update the dockerfiles.
+* Add container files and scripts for Podman.
+* Update dependencies.
+* Add an example that uses SQLite.
+* Update example projects.
+* Add more tests.
+* Add "make cover" for checking the test coverage.
+* Use build-time platform detection whenever possible.
+
 Changes from 1.17.8 to 1.17.9
 =============================
 
