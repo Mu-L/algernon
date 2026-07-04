@@ -360,16 +360,16 @@ github.com/xyproto/ollamaclient/v2
 # github.com/xyproto/onthefly v1.4.1
 ## explicit; go 1.21
 github.com/xyproto/onthefly
-# github.com/xyproto/permissionbolt/v2 v2.7.0
+# github.com/xyproto/permissionbolt/v2 v2.7.1
 ## explicit; go 1.25.0
 github.com/xyproto/permissionbolt/v2
-# github.com/xyproto/permissions v1.1.0
+# github.com/xyproto/permissions v1.1.1
 ## explicit; go 1.25.0
 github.com/xyproto/permissions
-# github.com/xyproto/permissionsql/v2 v2.2.0
+# github.com/xyproto/permissionsql/v2 v2.2.1
 ## explicit; go 1.25.0
 github.com/xyproto/permissionsql/v2
-# github.com/xyproto/permissionsqlite_noc v1.2.0
+# github.com/xyproto/permissionsqlite_noc v1.2.1
 ## explicit; go 1.25.0
 github.com/xyproto/permissionsqlite_noc
 # github.com/xyproto/pinterface/v2 v2.1.2

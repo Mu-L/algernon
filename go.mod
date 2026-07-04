@@ -37,10 +37,10 @@ require (
 	github.com/xyproto/mime v0.3.0
 	github.com/xyproto/ollamaclient/v2 v2.8.1
 	github.com/xyproto/onthefly v1.4.1
-	github.com/xyproto/permissionbolt/v2 v2.7.0
-	github.com/xyproto/permissions v1.1.0
-	github.com/xyproto/permissionsql/v2 v2.2.0
-	github.com/xyproto/permissionsqlite_noc v1.2.0
+	github.com/xyproto/permissionbolt/v2 v2.7.1
+	github.com/xyproto/permissions v1.1.1
+	github.com/xyproto/permissionsql/v2 v2.2.1
+	github.com/xyproto/permissionsqlite_noc v1.2.1
 	github.com/xyproto/pinterface/v2 v2.1.2
 	github.com/xyproto/pstore v1.4.0
 	github.com/xyproto/recwatch v1.2.1
