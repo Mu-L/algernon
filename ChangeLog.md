@@ -7,7 +7,7 @@ Changes from 1.17.9 to 1.17.10
 * Fix issue #122, open the internal log file with different flags.
 * Fix the flag precedence issue, ref #145.
 * Make the path handling more robust in connection with React / Hot Module Replacement.
-* Render more types of Lua tables, ref #199.
+* Render more types of Lua tables, ref #119.
 * Encode filenames in connection with the directory listing, ref #144.
 * Add the `remoteaddr` function, ref #114.
 * Let `KeyValue` also support table values, ref #113.
@@ -23,6 +23,7 @@ Changes from 1.17.9 to 1.17.10
 * Make two path-related errors into warnings.
 * Fix and update the dockerfiles.
 * Add container files and scripts for Podman.
+* Use the correct host for the auto-refresh feature.
 * Update dependencies.
 * Add an example that uses SQLite.
 * Update example projects.
