@@ -38,7 +38,7 @@ require (
 	github.com/xyproto/ollamaclient/v2 v2.8.1
 	github.com/xyproto/onthefly v1.4.1
 	github.com/xyproto/permissionbolt/v2 v2.7.1
-	github.com/xyproto/permissions v1.1.1
+	github.com/xyproto/permissions v1.1.2
 	github.com/xyproto/permissionsql/v2 v2.2.1
 	github.com/xyproto/permissionsqlite_noc v1.2.1
 	github.com/xyproto/pinterface/v2 v2.1.2
@@ -59,7 +59,7 @@ require (
 
 require (
 	github.com/dlclark/regexp2/v2 v2.2.2 // indirect
-	github.com/ncruces/go-sqlite3-wasm/v3 v3.1.35302 // indirect
+	github.com/ncruces/go-sqlite3-wasm/v3 v3.2.35303 // indirect
 )
 
 require (
@@ -97,7 +97,7 @@ require (
 	github.com/philhofer/fwd v1.2.0 // indirect
 	github.com/pingcap/errors v0.11.5-0.20260310054046-9c8b3586e4b2 // indirect
 	github.com/pingcap/log v1.1.1-0.20260227082333-572e590d08f1 // indirect
-	github.com/pingcap/tidb/pkg/parser v0.0.0-20260703145254-b2c55fb2b13d // indirect
+	github.com/pingcap/tidb/pkg/parser v0.0.0-20260706114353-7c10311814d2 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/quic-go/qpack v0.6.0 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
