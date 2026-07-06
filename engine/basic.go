@@ -27,7 +27,8 @@ import (
 // FutureStatus is useful when redirecting in combination with writing to a
 // buffer before writing to a client. May contain more fields in the future.
 type FutureStatus struct {
-	code int // Buffered HTTP status code
+	code   int  // Buffered HTTP status code
+	closed bool // The server has stopped writing output to this client
 }
 
 // LoadBasicSystemFunctions loads functions related to logging, markdown and the
@@ -152,9 +153,14 @@ func (ac *Config) LoadBasicSystemFunctions(L *lua.LState) {
 // where files are being served, into the given Lua state.
 func (ac *Config) LoadBasicWeb(w http.ResponseWriter, req *http.Request, L *lua.LState, filename string, flushFunc func(), httpStatus *FutureStatus) {
 
+	// Always have a place to track whether output has been closed for this request
+	if httpStatus == nil {
+		httpStatus = &FutureStatus{}
+	}
+
 	// Print the given arguments to the web page that is being served. Add a newline.
 	L.SetGlobal("print", L.NewFunction(func(L *lua.LState) int {
-		if req.Close {
+		if httpStatus.closed {
 			return 0 // number of results
 		}
 
@@ -177,7 +183,7 @@ func (ac *Config) LoadBasicWeb(w http.ResponseWriter, req *http.Request, L *lua.
 
 	// Print the given arguments to the web page that is being served. Do not add a newline.
 	L.SetGlobal("print_nonl", L.NewFunction(func(L *lua.LState) int {
-		if req.Close {
+		if httpStatus.closed {
 			return 0 // number of results
 		}
 
@@ -198,7 +204,7 @@ func (ac *Config) LoadBasicWeb(w http.ResponseWriter, req *http.Request, L *lua.
 
 	// Pretty print text to the web page that is being served. Add a newline.
 	L.SetGlobal("pprint", L.NewFunction(func(L *lua.LState) int {
-		if req.Close {
+		if httpStatus.closed {
 			return 0 // number of results
 		}
 
@@ -242,7 +248,7 @@ func (ac *Config) LoadBasicWeb(w http.ResponseWriter, req *http.Request, L *lua.
 	// Flush the ResponseWriter.
 	// Needed in debug mode, where ResponseWriter is buffered.
 	L.SetGlobal("flush", L.NewFunction(func(_ *lua.LState) int {
-		if req.Close {
+		if httpStatus.closed {
 			L.Push(lua.LBool(false)) // not a success, the connection has been closed
 			return 1                 // number of results
 		}
@@ -257,7 +263,7 @@ func (ac *Config) LoadBasicWeb(w http.ResponseWriter, req *http.Request, L *lua.
 	}))
 
 	// Close the communication with the client by setting a "Connection: close" header,
-	// flushing and setting req.Close to true.
+	// flushing and marking the output as closed.
 	L.SetGlobal("close", L.NewFunction(func(_ *lua.LState) int {
 		// Close the connection.
 		// Works for both HTTP and HTTP/2 now, ref: https://github.com/golang/go/issues/20977
@@ -270,7 +276,7 @@ func (ac *Config) LoadBasicWeb(w http.ResponseWriter, req *http.Request, L *lua.
 		}
 
 		// Stop Lua functions from writing more to this client
-		req.Close = true
+		httpStatus.closed = true
 
 		// TODO: Set up the HTTP/QUIC/HTTP/2 Server structs with a ConnContext
 		//       field and then fetch the connection from the req.Context()
@@ -289,7 +295,7 @@ func (ac *Config) LoadBasicWeb(w http.ResponseWriter, req *http.Request, L *lua.
 
 	// Set the Content-Type for the page
 	L.SetGlobal("content", L.NewFunction(func(L *lua.LState) int {
-		if req.Close {
+		if httpStatus.closed {
 			return 0 // number of results
 		}
 
@@ -339,7 +345,7 @@ func (ac *Config) LoadBasicWeb(w http.ResponseWriter, req *http.Request, L *lua.
 
 	// Set the HTTP header in the request, for a given key and value
 	L.SetGlobal("setheader", L.NewFunction(func(L *lua.LState) int {
-		if req.Close {
+		if httpStatus.closed {
 			return 0 // number of results
 		}
 
@@ -364,7 +370,7 @@ func (ac *Config) LoadBasicWeb(w http.ResponseWriter, req *http.Request, L *lua.
 
 	// Set the HTTP status code (must come before print)
 	L.SetGlobal("status", L.NewFunction(func(L *lua.LState) int {
-		if req.Close {
+		if httpStatus.closed {
 			return 0 // number of results
 		}
 
@@ -381,7 +387,7 @@ func (ac *Config) LoadBasicWeb(w http.ResponseWriter, req *http.Request, L *lua.
 
 	// Set a HTTP status code and print a message (optional)
 	L.SetGlobal("error", L.NewFunction(func(L *lua.LState) int {
-		if req.Close {
+		if httpStatus.closed {
 			return 0 // number of results
 		}
 
@@ -530,7 +536,7 @@ func (ac *Config) LoadBasicWeb(w http.ResponseWriter, req *http.Request, L *lua.
 
 	// Redirect a request (as found, by default)
 	L.SetGlobal("redirect", L.NewFunction(func(L *lua.LState) int {
-		if req.Close {
+		if httpStatus.closed {
 			L.Push(lua.LBool(false)) // can not redirect, since the connection is closed
 			return 1                 // number of results
 		}
@@ -550,7 +556,7 @@ func (ac *Config) LoadBasicWeb(w http.ResponseWriter, req *http.Request, L *lua.
 
 	// Permanently redirect a request, which is the same as redirect(url, 301)
 	L.SetGlobal("permanent_redirect", L.NewFunction(func(L *lua.LState) int {
-		if req.Close {
+		if httpStatus.closed {
 			L.Push(lua.LBool(false)) // not a success, the connection has been closed
 			return 1                 // number of results
 		}

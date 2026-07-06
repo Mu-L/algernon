@@ -306,11 +306,11 @@ func (ac *Config) FilePage(w http.ResponseWriter, req *http.Request, filename, l
 						flusher.Flush()
 					}
 				} else if err != nil {
-					if !req.Close {
+					if !httpStatus.closed {
 						logrus.Warn(filename + ": " + err.Error())
 						// Close the connection. Works for both HTTP and HTTP/2 now, ref: https://github.com/golang/go/issues/20977
 						w.Header().Add("Connection", "close")
-						req.Close = true
+						httpStatus.closed = true
 					}
 				}
 			}
@@ -338,11 +338,11 @@ func (ac *Config) FilePage(w http.ResponseWriter, req *http.Request, filename, l
 				_, writeErr := WriteRecorder(w, recorder) // WriteRecorder starts out by writing the status header
 				// Note: no flushing here, because there was an error when running the Lua script
 				if writeErr != nil {
-					if !req.Close {
+					if !httpStatus.closed {
 						logrus.Warn(filename + ": " + writeErr.Error())
 						// Close the connection. Works for both HTTP and HTTP/2 now, ref: https://github.com/golang/go/issues/20977
 						w.Header().Add("Connection", "close")
-						req.Close = true
+						httpStatus.closed = true
 					}
 				}
 			}
