@@ -248,7 +248,7 @@ github.com/pingcap/errors
 # github.com/pingcap/log v1.1.1-0.20260227082333-572e590d08f1
 ## explicit; go 1.25
 github.com/pingcap/log
-# github.com/pingcap/tidb/pkg/parser v0.0.0-20260706114353-7c10311814d2
+# github.com/pingcap/tidb/pkg/parser v0.0.0-20260706142737-c22327ff3e08
 ## explicit; go 1.25
 github.com/pingcap/tidb/pkg/parser/charset
 github.com/pingcap/tidb/pkg/parser/format
@@ -508,7 +508,7 @@ golang.org/x/sys/windows
 # golang.org/x/term v0.44.0
 ## explicit; go 1.25.0
 golang.org/x/term
-# golang.org/x/text v0.38.0
+# golang.org/x/text v0.39.0
 ## explicit; go 1.25.0
 golang.org/x/text/encoding
 golang.org/x/text/encoding/charmap
