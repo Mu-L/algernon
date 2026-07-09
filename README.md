@@ -1,7 +1,7 @@
 <!--
 title: Algernon
-description: Web server with built-in support for Lua, Teal, Markdown, Pongo2, Amber, Sass, SCSS, GCSS, JSX, TypeScript, Bolt, PostgreSQL, SQLite, Redis, Valkey, MariaDB, MySQL, MSSQL, Tollbooth, Pie, Graceful, Permissions2, users and permissions, IPv6
-keywords: web server, QUIC, lua, teal, markdown, pongo2, application server, http, http2, HTTP/2, HTTP/3, go, golang, algernon, JSX, TSX, TypeScript, React, BoltDB, Bolt, PostgreSQL, SQLite, Redis, Valkey, MariaDB, MySQL, Three.js, ipv6
+description: Web server with built-in support for Lua, Teal, Markdown, Pongo2, Amber, Sass, SCSS, GCSS, JSX, TypeScript, Bolt, PostgreSQL, SQLite, Redis, Valkey, MariaDB, MySQL, MSSQL, Tollbooth, Pie, Graceful, Permissions2, users and permissions, IPv6, React19
+keywords: web server, QUIC, lua, teal, markdown, pongo2, application server, http, http2, HTTP/2, HTTP/3, go, golang, algernon, JSX, TSX, TypeScript, React, BoltDB, Bolt, PostgreSQL, SQLite, Redis, Valkey, MariaDB, MySQL, Three.js, ipv6, react19
 theme: material
 -->
 
@@ -14,7 +14,7 @@ theme: material
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fxyproto%2Falgernon.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fxyproto%2Falgernon?ref=badge_shield)
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/badges/StandWithUkraine.svg)](https://stand-with-ukraine.pp.ua)
 
-Web server with built-in support for HTTP/2, HTTP/3 (QUIC), Lua, Teal, Markdown, Pongo2, HyperApp, Amber, Sass(SCSS), GCSS, JSX, TypeScript, Ollama (LLMs), BoltDB (built-in, stores the database in a file, like SQLite), Redis, Valkey, PostgreSQL, SQLite, MariaDB, MySQL, MSSQL, IPv6, rate limiting, graceful shutdown, plugins, users and permissions.
+Web server with built-in support for HTTP/2, HTTP/3 (QUIC), Lua, Teal, Markdown, Pongo2, HyperApp, Amber, Sass(SCSS), GCSS, JSX, TypeScript, Ollama (LLMs), BoltDB (built-in, stores the database in a file, like SQLite), Redis, Valkey, PostgreSQL, SQLite, MariaDB, MySQL, MSSQL, IPv6, npm-less React 19, rate limiting, graceful shutdown, plugins, users and permissions.
 
 All in one small self-contained executable.
 
