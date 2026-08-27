@@ -62,28 +62,9 @@ func (ac *Config) LoadServeFile(w http.ResponseWriter, req *http.Request, L *lua
 		if L.GetTop() == 2 {
 			luaTable := L.CheckTable(2)
 
-			goMap := gluamapper.ToGoValue(luaTable, gluamapper.Option{
-				NameFunc: func(s string) string {
-					return s
-				},
-			})
-
-			if interfaceMap, ok := goMap.(map[any]any); ok {
-				// Try to convert from map[any]any to map[string]any
-				convertedMap := make(map[string]any)
-				for k, v := range interfaceMap {
-					if ks, ok := k.(string); ok {
-						convertedMap[ks] = v
-					} else {
-						logrus.Warnf("serve2: skipping non-string key in table: %v (%T)", k, k)
-					}
-				}
-				pongoMap = pongo2.Context(convertedMap)
-			} else if m, ok := goMap.(map[string]any); ok {
+			if m, ok := gluamapper.ToGoValue(luaTable, gluamapperOption).(map[string]any); ok {
 				pongoMap = pongo2.Context(m)
 			}
-
-			// fmt.Println("PONGOMAP", pongoMap, "LUA TABLE", luaTable)
 		} else if L.GetTop() > 2 {
 			logrus.Error("Too many arguments given to the serve2 function")
 			return 0 // number of restuls

@@ -136,6 +136,17 @@ func Table2maps(luaTable *lua.LTable) (map[string]string, map[string]int, map[in
 	return mapSS, mapSI, mapIS, mapII
 }
 
+// ContainsTable checks if any of the values in the given table are tables
+func ContainsTable(luaTable *lua.LTable) bool {
+	found := false
+	luaTable.ForEach(func(_, tvalue lua.LValue) {
+		if _, ok := tvalue.(*lua.LTable); ok {
+			found = true
+		}
+	})
+	return found
+}
+
 // Table2interfaceMap converts a Lua table to a map[string]any
 // If values are also tables, they are also attempted converted to map[string]any
 func Table2interfaceMap(luaTable *lua.LTable) map[string]any {

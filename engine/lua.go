@@ -385,18 +385,12 @@ func (ac *Config) buildHandlerPool(filename string, mux *http.ServeMux) error {
 	return nil
 }
 
-// isArrayLikeTable reports whether the table has sequential integer keys 1..N.
-func isArrayLikeTable(t *lua.LTable) bool {
-	n := t.Len()
-	if n == 0 {
-		return false
-	}
-	for i := 1; i <= n; i++ {
-		if t.RawGetInt(i) == lua.LNil {
-			return false
-		}
-	}
-	return true
+// The global tables that are provided by Lua itself, or by Teal
+var luaLibraries = map[string]bool{"_G": true, "bit32": true, "channel": true, "coroutine": true, "debug": true, "io": true, "math": true, "os": true, "package": true, "string": true, "table": true, "tl": true}
+
+// gluamapperOption keeps the original key names when converting Lua tables.
+var gluamapperOption = gluamapper.Option{
+	NameFunc: func(s string) string { return s },
 }
 
 // LuaFunctionMap returns the functions available in the given Lua code as
@@ -435,26 +429,28 @@ func (ac *Config) LuaFunctionMap(w http.ResponseWriter, req *http.Request, luada
 			funcs[key.String()] = luaString.String()
 		} else if luaTable, ok := value.(*lua.LTable); ok {
 
-			// Convert the table to a map and save it.
-			// Ignore values of a different type.
-			mapinterface, _ := convert.Table2map(luaTable, false)
-			switch m := mapinterface.(type) {
-			case map[string]string:
-				funcs[key.String()] = map[string]string(m)
-			case map[string]int:
-				funcs[key.String()] = map[string]int(m)
-			case map[int]string:
-				funcs[key.String()] = map[int]string(m)
-			case map[int]int:
-				funcs[key.String()] = map[int]int(m)
-			default:
-				// Recurse only for array-like tables, see issue #119.
-				// Library globals (string, math, _G, ...) use string keys
-				// and may contain cycles, so they are skipped here.
-				if isArrayLikeTable(luaTable) {
-					funcs[key.String()] = gluamapper.ToGoValue(luaTable, gluamapper.Option{
-						NameFunc: func(s string) string { return s },
-					})
+			// Skip the Lua libraries, they are not meant for the templates
+			// and can be both large and self-referential
+			if luaLibraries[key.String()] {
+				return
+			}
+
+			if convert.ContainsTable(luaTable) {
+				// Tables within tables, see issue #119
+				funcs[key.String()] = gluamapper.ToGoValue(luaTable, gluamapperOption)
+			} else {
+				// Convert the table to a map and save it.
+				// Ignore values of a different type.
+				mapinterface, _ := convert.Table2map(luaTable, false)
+				switch m := mapinterface.(type) {
+				case map[string]string:
+					funcs[key.String()] = map[string]string(m)
+				case map[string]int:
+					funcs[key.String()] = map[string]int(m)
+				case map[int]string:
+					funcs[key.String()] = map[int]string(m)
+				case map[int]int:
+					funcs[key.String()] = map[int]int(m)
 				}
 			}
 
@@ -501,11 +497,7 @@ func (ac *Config) LuaFunctionMap(w http.ResponseWriter, req *http.Request, luada
 						switch {
 						case isTable:
 							// lv was a Lua Table
-							retval = gluamapper.ToGoValue(tbl, gluamapper.Option{
-								NameFunc: func(s string) string {
-									return s
-								},
-							})
+							retval = gluamapper.ToGoValue(tbl, gluamapperOption)
 							if ac.debugMode && ac.verboseMode {
 								logrus.Infof("%s -> (map)", utils.Infostring(functionName, args))
 							}

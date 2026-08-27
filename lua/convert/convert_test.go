@@ -109,6 +109,38 @@ func TestTable2map(t *testing.T) {
 	}
 }
 
+func TestContainsTable(t *testing.T) {
+	L := lua.NewState()
+	defer L.Close()
+
+	// Only strings and numbers
+	flat := L.NewTable()
+	flat.Append(lua.LString("first"))
+	L.RawSet(flat, lua.LString("count"), lua.LNumber(1))
+	if ContainsTable(flat) {
+		t.Error("a table of strings and numbers does not contain tables")
+	}
+
+	// A list of tables, ref issue #119
+	objects := L.NewTable()
+	objects.Append(L.NewTable())
+	if !ContainsTable(objects) {
+		t.Error("a list of tables contains tables")
+	}
+
+	// A table within a string-keyed table
+	config := L.NewTable()
+	L.RawSet(config, lua.LString("db"), L.NewTable())
+	if !ContainsTable(config) {
+		t.Error("a table with a table value contains tables")
+	}
+
+	// An empty table
+	if ContainsTable(L.NewTable()) {
+		t.Error("an empty table does not contain tables")
+	}
+}
+
 func TestLValueWrapperScan(t *testing.T) {
 	var w LValueWrapper
 

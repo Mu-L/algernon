@@ -1,60 +1,58 @@
 package engine
 
 import (
+	"net/http/httptest"
+	"os"
+	"strings"
 	"testing"
+	"time"
 
-	lua "github.com/xyproto/gopher-lua"
+	"github.com/xyproto/algernon/lua/luastate"
+	"github.com/xyproto/algernon/utils"
+	"github.com/xyproto/datablock"
 )
 
-// Covers the helper used by the recursive table conversion in issue #119.
-func TestIsArrayLikeTable(t *testing.T) {
-	L := lua.NewState()
-	defer L.Close()
+// Nested Lua tables should be available to Pongo2 templates, see issue #119
+func TestLuaFunctionMapNestedTables(t *testing.T) {
+	req := httptest.NewRequest("GET", "/", nil)
+	w := httptest.NewRecorder()
 
-	t.Run("list of numbers", func(t *testing.T) {
-		tbl := L.NewTable()
-		tbl.Append(lua.LNumber(1))
-		tbl.Append(lua.LNumber(2))
-		tbl.Append(lua.LNumber(3))
-		if !isArrayLikeTable(tbl) {
-			t.Error("expected {1,2,3} to be array-like")
-		}
-	})
+	filename := "testdata/issue119/index.po2"
+	luafilename := "testdata/issue119/data.lua"
+	pongodata, err := os.ReadFile(filename)
+	if err != nil {
+		t.Fatalf("Failed reading file: %s", err)
+	}
+	luadata, err := os.ReadFile(luafilename)
+	if err != nil {
+		t.Fatalf("Failed reading file: %s", err)
+	}
 
-	t.Run("list of nested tables (issue #119)", func(t *testing.T) {
-		outer := L.NewTable()
-		for i := 1; i <= 3; i++ {
-			inner := L.NewTable()
-			inner.Append(lua.LNumber(i))
-			outer.Append(inner)
-		}
-		if !isArrayLikeTable(outer) {
-			t.Error("expected {{1},{2},{3}} to be array-like")
-		}
-	})
+	ac := &Config{versionString: "test"}
+	ac.SetFileStatCache(datablock.NewFileStat(true, time.Minute*1))
+	ac.cache = datablock.NewFileCache(20000000, true, 64*utils.KiB, true, 0)
+	ac.luapool = luastate.New()
+	defer ac.luapool.Shutdown()
 
-	t.Run("string-keyed map", func(t *testing.T) {
-		tbl := L.NewTable()
-		tbl.RawSetString("a", lua.LNumber(1))
-		tbl.RawSetString("b", lua.LNumber(2))
-		if isArrayLikeTable(tbl) {
-			t.Error("string-keyed table must not be array-like")
-		}
-	})
+	funcs, err := ac.LuaFunctionMap(w, req, luadata, luafilename)
+	if err != nil {
+		t.Fatalf("Error with LuaFunctionMap: %s", err)
+	}
 
-	t.Run("empty table", func(t *testing.T) {
-		tbl := L.NewTable()
-		if isArrayLikeTable(tbl) {
-			t.Error("empty table must not be array-like")
-		}
-	})
+	// A table that refers to itself must not cause endless recursion
+	sl, ok := funcs["cyclic"].([]any)
+	if !ok {
+		t.Fatalf("cyclic = %T, want []any", funcs["cyclic"])
+	}
+	if len(sl) != 1 || sl[0] != nil {
+		t.Errorf("cyclic = %v, want [<nil>]", sl)
+	}
 
-	t.Run("sparse table", func(t *testing.T) {
-		tbl := L.NewTable()
-		tbl.RawSetInt(1, lua.LNumber(10))
-		tbl.RawSetInt(3, lua.LNumber(30))
-		if isArrayLikeTable(tbl) && tbl.RawGetInt(2) == lua.LNil {
-			t.Error("sparse table with a nil hole must not be array-like")
-		}
-	})
+	ac.PongoPage(w, req, filename, pongodata, funcs)
+
+	got := strings.TrimSpace(w.Body.String())
+	const want = "numbers:1,2,3| objects:1,2,3| dicts:a=1,b=2| config:localhost:5432| matrix:3| cyclic:"
+	if got != want {
+		t.Errorf("rendered page = %q, want %q", got, want)
+	}
 }
