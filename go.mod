@@ -1,6 +1,6 @@
 module github.com/xyproto/algernon
 
-go 1.26.0
+go 1.26
 
 require (
 	github.com/caddyserver/certmagic v0.25.4
@@ -14,8 +14,8 @@ require (
 	github.com/felixge/fgtrace v0.2.0
 	github.com/flosch/pongo2/v6 v6.1.0
 	github.com/go-gcfg/gcfg v1.2.3
-	github.com/go-webauthn/webauthn v0.17.4
-	github.com/gomarkdown/markdown v0.0.0-20260818103853-6d1f24fc3a11
+	github.com/go-webauthn/webauthn v0.18.0
+	github.com/gomarkdown/markdown v0.0.0-20260824154242-13c5cf49db8d
 	github.com/lib/pq v1.12.3
 	github.com/microcosm-cc/bluemonday v1.0.27
 	github.com/mitchellh/go-homedir v1.1.0
@@ -23,7 +23,7 @@ require (
 	github.com/orsinium-labs/enum v1.5.0
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/quic-go/quic-go v0.61.0
-	github.com/sirupsen/logrus v1.10.1
+	github.com/sirupsen/logrus v1.10.2
 	github.com/wellington/sass v0.0.0-20160911051022-cab90b3986d6
 	github.com/xyproto/ask v1.1.0
 	github.com/xyproto/datablock v1.2.1
@@ -58,7 +58,7 @@ require (
 
 require (
 	github.com/dlclark/regexp2/v2 v2.7.1 // indirect
-	github.com/ncruces/go-sqlite3-wasm/v3 v3.2.35304 // indirect
+	github.com/ncruces/go-sqlite3-wasm/v3 v3.4.35304 // indirect
 )
 
 require (
@@ -94,7 +94,7 @@ require (
 	github.com/philhofer/fwd v1.2.0 // indirect
 	github.com/pingcap/errors v0.11.5-0.20260310054046-9c8b3586e4b2 // indirect
 	github.com/pingcap/log v1.1.1-0.20260227082333-572e590d08f1 // indirect
-	github.com/pingcap/tidb/pkg/parser v0.0.0-20260820100658-17b780783925 // indirect
+	github.com/pingcap/tidb/pkg/parser v0.0.0-20260827141026-25050b53f84f // indirect
 	github.com/quic-go/qpack v0.6.0 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
