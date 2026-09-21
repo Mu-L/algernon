@@ -14,8 +14,8 @@ require (
 	github.com/felixge/fgtrace v0.2.0
 	github.com/flosch/pongo2/v6 v6.1.0
 	github.com/go-gcfg/gcfg v1.2.3
-	github.com/go-webauthn/webauthn v0.18.1
-	github.com/gomarkdown/markdown v0.0.0-20260917010721-cc30ffac3c05
+	github.com/go-webauthn/webauthn v0.18.2
+	github.com/gomarkdown/markdown v0.0.0-20260921172736-e177decc3c2f
 	github.com/lib/pq v1.12.3
 	github.com/microcosm-cc/bluemonday v1.0.27
 	github.com/mitchellh/go-homedir v1.1.0
@@ -94,7 +94,7 @@ require (
 	github.com/philhofer/fwd v1.2.0 // indirect
 	github.com/pingcap/errors v0.11.5-0.20260310054046-9c8b3586e4b2 // indirect
 	github.com/pingcap/log v1.1.1-0.20260227082333-572e590d08f1 // indirect
-	github.com/pingcap/tidb/pkg/parser v0.0.0-20260918060201-dc52119f4a54 // indirect
+	github.com/pingcap/tidb/pkg/parser v0.0.0-20260921145437-ead9d38239af // indirect
 	github.com/quic-go/qpack v0.6.0 // indirect
 	github.com/rogpeppe/go-internal v1.12.0 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
