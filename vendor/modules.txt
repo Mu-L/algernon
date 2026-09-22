@@ -248,7 +248,7 @@ github.com/pingcap/errors
 # github.com/pingcap/log v1.1.1-0.20260227082333-572e590d08f1
 ## explicit; go 1.25
 github.com/pingcap/log
-# github.com/pingcap/tidb/pkg/parser v0.0.0-20260921145437-ead9d38239af
+# github.com/pingcap/tidb/pkg/parser v0.0.0-20260922094951-64e8c4c05ecb
 ## explicit; go 1.25.0
 github.com/pingcap/tidb/pkg/parser/charset
 github.com/pingcap/tidb/pkg/parser/format
@@ -260,7 +260,7 @@ github.com/pkg/browser
 # github.com/quic-go/qpack v0.6.0
 ## explicit; go 1.24
 github.com/quic-go/qpack
-# github.com/quic-go/quic-go v0.62.0
+# github.com/quic-go/quic-go v0.63.0
 ## explicit; go 1.26.0
 github.com/quic-go/quic-go
 github.com/quic-go/quic-go/http3
@@ -415,8 +415,8 @@ github.com/xyproto/tinysvg
 # github.com/xyproto/unzip v1.0.1
 ## explicit; go 1.25.0
 github.com/xyproto/unzip
-# github.com/xyproto/vt v1.9.18
-## explicit; go 1.25.1
+# github.com/xyproto/vt v1.9.19
+## explicit; go 1.26.0
 github.com/xyproto/vt
 # github.com/yosssi/gcss v0.1.0
 ## explicit
